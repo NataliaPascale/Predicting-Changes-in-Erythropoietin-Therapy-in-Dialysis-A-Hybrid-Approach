@@ -21,7 +21,8 @@ Due to the highly sensitive and private nature of the medical records used in th
 **Dataset Structure**
 The models expect a tabular dataset representing a retrospective cohort of dialysis patients. Each instance (patient visit/month) should have the following conceptual structure:
 * **Inputs (Features):** Demographic data, recent laboratory results (e.g., Hemoglobin levels), and carefully engineered historical features (e.g., Lagged ERI, past EPO dosages).
-* **Outputs (Targets):** * *For Classification:* A categorical label indicating whether the dose should be increased, decreased, or maintained (based on specific clinical sensitivity thresholds like 500/1000 units).
+* **Outputs (Targets):**
+  * * *For Classification:* A categorical label indicating whether the dose should be increased, decreased, or maintained (based on specific clinical sensitivity thresholds like 500/1000 units).
   * *For Regression/MoE:* The continuous numerical variation of the required EPO dose.
 
 ## Code Execution (Training & Inference)
