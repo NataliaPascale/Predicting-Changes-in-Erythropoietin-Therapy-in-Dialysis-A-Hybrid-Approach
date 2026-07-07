@@ -63,7 +63,7 @@ A comprehensive evaluation pipeline is embedded within the scripts to assess bot
 The classification performance is evaluated to ensure safe and balanced clinical recommendations across all classes:
 * Accuracy & Balanced Accuracy
 * Macro F1-Score
-* Precision, Recall, and F1-Score (calculated per single class)
+* Precision, Recall, and F1-Score (calculated per class)
 * Confusion Matrices (to visually assess misclassifications)
 * **Opposite Errors Rate:** A critical clinical metric tracking severe misclassifications (e.g., predicting an increase when a decrease was strictly required).
 
