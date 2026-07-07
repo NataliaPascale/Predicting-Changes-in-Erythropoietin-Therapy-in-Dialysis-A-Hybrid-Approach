@@ -1,1 +1,79 @@
-# Predicting-Changes-in-Erythropoietin-Therapy-in-Dialysis-A-Hybrid-Approach
+# Predicting Changes in Erythropoietin Therapy in Dialysis: A Hybrid Approach Combining Machine Learning and Deep Learning to Support Nephrologists
+
+This repository contains the code, analysis pipelines, and results of our study on developing a clinical decision support system (CDSS) for Erythropoietin (EPO) dosage prediction in hemodialysis patients.
+
+It contains the processing scripts, model implementations, and evaluation metrics for comparing traditional Machine Learning approaches (Classification and Regression) with advanced hybrid architectures (Mixture of Experts with 3 and 6 experts).
+
+## Environment Setup
+
+The codebase is built and tested natively using **Python 3.12.6**. No external virtual environment managers (like Conda) are strictly required.
+
+To set up the environment, install the required dependencies directly via `pip` from the repository root:
+```bash
+pip install pandas numpy scikit-learn xgboost lightgbm
+# Ensure your preferred deep learning framework (e.g., PyTorch) is installed for LSTM and SAINT models
+```
+
+## Datasets
+
+Due to the highly sensitive and private nature of the medical records used in this study, the original clinical dataset cannot be published in this repository. 
+
+**Dataset Structure**
+The models expect a tabular dataset representing a retrospective cohort of dialysis patients. Each instance (patient visit/month) should have the following conceptual structure:
+* **Inputs (Features):** Demographic data, recent laboratory results (e.g., Hemoglobin levels), and carefully engineered historical features (e.g., Lagged ERI, past EPO dosages).
+* **Outputs (Targets):** * *For Classification:* A categorical label indicating whether the dose should be increased, decreased, or maintained (based on specific clinical sensitivity thresholds like 500/1000 units).
+  * *For Regression/MoE:* The continuous numerical variation of the required EPO dose.
+
+## Code Execution (Training & Inference)
+
+In this repository, the training, validation, and inference pipelines are consolidated into single, end-to-end runnable scripts for each analytical task. This ensures a streamlined execution from data ingestion to final prediction generation.
+
+Execute the scripts directly from your terminal:
+
+**1. Classification**
+Runs the classification models to predict the categorical dosage adjustment (Increase/Decrease/Maintain). This section includes implementations for **LSTM** and **SAINT** architectures.
+```bash
+python [classification]/[LSTM_Classification].py
+python [classification]/[SAINT].py
+```
+
+**2. Regression**
+Runs the regression models to predict the continuous variation of the EPO dose. This section includes code for **XGBoost**, **LightGBM**, and **LSTM** models.
+```bash
+python [regression]/[XGBoost].py
+python [regression]/[LightGBM].py
+python [regression]/[LSTM_Regression].py
+```
+
+**3. Mixture of Experts (MoE)**
+Runs the hybrid MoE frameworks. The repository includes two distinct configurations:
+* **3-Expert Setup:** Uses **SAINT** as the gating network with 3 **XGBoost** models acting as the experts.
+* **6-Expert Setup:** Uses **SAINT** as the gating network with a dual-expert configuration consisting of 3 **XGBoost** and 3 **LSTM** models.
+```bash
+python [mixture_of_experts]/[Moe_3experts].py
+python [mixture_of_experts]/[Moe_6Experts].py
+```
+
+## Analysis & Evaluation Metrics
+
+A comprehensive evaluation pipeline is embedded within the scripts to assess both the clinical viability and the technical accuracy of the predictions. The results are generated automatically upon script execution.
+
+**Classification Metrics**
+The classification performance is evaluated to ensure safe and balanced clinical recommendations across all classes:
+* Accuracy & Balanced Accuracy
+* Macro F1-Score
+* Precision, Recall, and F1-Score (calculated per single class)
+* Confusion Matrices (to visually assess misclassifications)
+* **Opposite Errors Rate:** A critical clinical metric tracking severe misclassifications (e.g., predicting an increase when a decrease was strictly required).
+
+**Regression & MoE Metrics**
+Continuous prediction performance is evaluated using standard error metrics alongside specific clinical threshold-based accuracies. Since real-world EPO doses are administered in discrete steps (multiples of 1000 UI), the evaluation includes:
+* Mean Absolute Error (MAE)
+* Root Mean Squared Error (RMSE)
+* R-squared (R²)
+* **Accuracy (± 2000 UI):** Measured within a predefined acceptable clinical tolerance margin of ± 2000 UI on the continuous raw predictions.
+* **Accuracy (Rounded):** Measured by first rounding the continuous prediction to the nearest multiple of 1000 UI (to reflect actual ward administration practices) and then evaluating it within the ± 2000 UI tolerance margin.
+
+## Results
+
+The `[results]/` folder contains the aggregated outputs generated by the scripts, including exported metrics, performance comparisons across models, and generated confusion matrices.
