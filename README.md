@@ -1,4 +1,4 @@
-# Predicting Changes in Erythropoietin Therapy in Dialysis: A Hybrid Approach Combining Machine Learning and Deep Learning to Support Nephrologists
+# A Transparent Mixture-of-Experts Decision Support System for Erythropoietin Dosing in Hemodialysis
 
 This repository contains the code, analysis pipelines, and results of our study on developing a clinical decision support system (CDSS) for Erythropoietin (EPO) dosage prediction in hemodialysis patients.
 ![CDSS Pipeline Architecture](cdss_pipeline.png)
